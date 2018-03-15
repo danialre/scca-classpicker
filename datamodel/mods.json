@@ -1,0 +1,228 @@
+{
+    "version": "0.1",
+    "lastupdate": "20180312",
+    "mods": [
+        {
+            "name": "cai",
+            "description": "Cold-air intake or Short-ram intake",
+            "category": "Intake",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "intercooler",
+            "description": "Intercooler (added or replaced)",
+            "category": "Intake",
+            "allowed_class": ["STR_PREP", "PREP"]
+        },
+        {
+            "name": "tb",
+            "description": "Throttle Body or Intake manifold",
+            "category": "Intake",
+            "allowed_class": ["STR_PREP", "PREP"]
+        },
+        {
+            "name": "fi",
+            "description": "Turbocharger/Supercharger (added, modified or replaced)",
+            "category": "Intake",
+            "allowed_class": ["STR_MOD", "MOD"]
+        },
+        {
+            "name": "tune",
+            "description": "ECU tune or reprogram",
+            "category": "Engine",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "ebcs",
+            "description": "Boost control solenoid (includes controllers, does not include ECU remaps)",
+            "category": "Engine",
+            "allowed_class": ["STR_PREP", "PREP"]
+        },
+        {
+            "name": "egr",
+            "description": "Emissions devices (EGR, air pump, etc.) removed",
+            "category": "Engine",
+            "allowed_class": ["STR_PREP", "PREP"]
+        },
+        {
+            "name": "batt",
+            "description": "Battery relocation",
+            "category": "Engine",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "oilpan",
+            "description": "Oil pan or pickups",
+            "category": "Engine",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "pistons",
+            "description": "Pistons",
+            "category": "Engine",
+            "allowed_class": ["STR_MOD", "PREP"]
+        },
+        {
+            "name": "cams",
+            "description": "Camshaft(s)",
+            "category": "Engine",
+            "allowed_class": ["STR_MOD", "PREP"]
+        },
+        {
+            "name": "crank",
+            "description": "Crankshaft (no added stroke)",
+            "category": "Engine",
+            "allowed_class": ["STR_MOD", "PREP"]
+        },
+        {
+            "name": "crankstroke",
+            "description": "Crankshaft with changed stroke",
+            "category": "Engine",
+            "allowed_class": ["STR_MOD", "MOD"]
+        },
+        {
+            "name": "engineswap",
+            "description": "Engine swap (same manufacturer)",
+            "category": "Engine",
+            "allowed_class": ["STR_MOD", "MOD"]
+        },
+        {
+            "name": "xpengineswap",
+            "description": "Motor swap with different manufacturers (V8/LS-powered Miatas, etc.)",
+            "category": "Engine",
+            "allowed_class": ["XP"]
+        },
+        {
+            "name": "transwap",
+            "description": "Transmission swap",
+            "category": "Engine",
+            "allowed_class": ["STR_MOD", "PREP"]
+        },
+        {
+            "name": "catback",
+            "description": "Catback exhaust",
+            "category": "Exhaust",
+            "allowed_class": ["STREET", "PREP"]
+        },
+        {
+            "name": "catless",
+            "description": "Last catalytic converter removed (includes catless downpipes)",
+            "category": "Exhaust",
+            "allowed_class": ["STR_PREP", "PREP"]
+        },
+        {
+            "name": "dp",
+            "description": "Downpipe (Turboback exhaust, at least one catalytic converter in system)",
+            "category": "Exhaust",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "up",
+            "description": "Headers (includes uppipe)",
+            "category": "Exhaust",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "swaybar",
+            "description": "Sway bar (up to 1 added or removed)",
+            "category": "Suspension",
+            "allowed_class": ["STREET", "PREP"]
+        },
+        {
+            "name": "swaybar2",
+            "description": "Both sway bars changed",
+            "category": "Suspension",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "spring",
+            "description": "Springs (includes cutting)",
+            "category": "Suspension",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "shock",
+            "description": "Shock absorbers/Struts (without spring changes)",
+            "category": "Suspension",
+            "allowed_class": ["STREET", "PREP"]
+        },
+        {
+            "name": "camplate",
+            "description": "Camber plate(s)",
+            "category": "Suspension",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "coilover",
+            "description": "Coilovers",
+            "category": "Suspension",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "fenderroll",
+            "description": "Fenders rolled",
+            "category": "Bodywork",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "fenderpull",
+            "description": "Fenders pulled",
+            "category": "Bodywork",
+            "allowed_class": ["STR_PREP", "PREP"]
+        },
+        {
+            "name": "interior",
+            "description": "Stripped interior",
+            "category": "Bodywork",
+            "allowed_class": ["PREP"]
+        },
+        {
+            "name": "body1",
+            "description": "OEM spoilers, splitters, wings, side skirts, vents",
+            "category": "Bodywork",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "body2",
+            "description": "Aftermarket spoilers, splitters, wings, side skirts, vents (includes Ford Racing, TRD, NISMO, Mazdaspeed, etc.)",
+            "category": "Bodywork",
+            "allowed_class": ["STR_PREP", "PREP"]
+        },
+        {
+            "name": "strutbar",
+            "description": "Strut bars or Strut tower braces",
+            "category": "Bodywork",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "sfc",
+            "description": "Subframe connectors (bolted, not welded)",
+            "category": "Bodywork",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "chassismod",
+            "description": "Significant chassis modifications (roof removed on hardtop cars, body replacement on BOF cars, etc.)",
+            "category": "Bodywork",
+            "allowed_class": ["MOD"]
+        },
+        {
+            "name": "steeringwheel",
+            "description": "Aftermarket steering wheel that replaces one with airbags",
+            "category": "Wheels and Tires",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "brakes",
+            "description": "Brake calipers or rotors, or disc/drum swap",
+            "category": "Wheels and Tires",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        },
+        {
+            "name": "wheelsize",
+            "description": "Wheel width increased beyond stock or diameter changed more than +/-1 inch",
+            "category": "Wheels and Tires",
+            "allowed_class": ["STR_TOURING", "PREP"]
+        }
+    ]
+}
