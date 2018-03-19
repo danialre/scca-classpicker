@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+    <title>Utah Region SCCA Solo Class Picker</title>
+    <style type='text/css'>
+        body { font-family:sans-serif; }
+        input[type='radio'] { display:none; }
+        label { padding:0.2em; }
+        #curclass { position:fixed; padding:0.5em; width:100%; left:0; top:0; padding-bottom:1em; background-color:#fff; box-shadow: 0px 2px 10px #777;}
+        #curclass input+label { color: #888; }
+        #curclass input:checked+label { color: #000; background-color: #8f8; }
+        .disclaimer { background-color: #f88; }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    const VCl = Object.freeze({ {% for cls in classes.keys() %}{{cls}}: {{ classes[cls] }}, {% endfor %} })
+    function is_c(elem) { return $('#' + elem).is(':checked'); } // helper function: is this value true or not
+    var allowed_classes = Object.keys(VCl);
+    function set_class(classlist) {
+        // check current classes to make sure each one is still allowed
+        var newlist = [];
+        $.each(allowed_classes, function(idx) { // note: cannot remove without copying array, since this is going by array index
+            if($.inArray(allowed_classes[idx], classlist) > -1) newlist.push(allowed_classes[idx]);
+        });
+        allowed_classes = (newlist.length == 0 ? classlist : newlist);
+    }
+    function check_class() {
+        allowed_classes = Object.keys(VCl);
+        {{ js }}
+        
+        if(allowed_classes.length < 1) {
+            alert('Error determining classes'); // something went wrong
+            return;
+        }
+        var best_class = VCl[allowed_classes[0]]
+        // look for "easiest" class and pick that
+        $.each(allowed_classes, function(idx) { if(VCl[allowed_classes[idx]] < best_class) best_class = VCl[allowed_classes[idx]]; });
+        switch(best_class) { // update the UI
+            case VCl.STR_TOURING: $('#cls-st').prop('checked', true); break;
+            case VCl.STR_PREP:    $('#cls-sp').prop('checked', true); break;
+            case VCl.STR_MOD:     $('#cls-sm').prop('checked', true); break;
+            case VCl.PREP:        $('#cls-p').prop('checked', true); break;
+            case VCl.MOD:         $('#cls-m').prop('checked', true); break;
+            case VCl.XP:          $('#cls-xp').prop('checked', true); break;
+            default:              $('#cls-s').prop('checked', true);
+        }
+    }
+    function clear_mods() {
+        $('input.mod').prop('checked', false);
+        check_class(); // reset UI
+    }
+    window.onload = function() {
+        $('input.mod').click(check_class);
+        $('#clear_mods_button').click(clear_mods);
+        check_class(); // check anyway if the page reloads
+    }
+    </script>
+</head><body>
+    <div id='curclass'>Based on the modifications your car has, your appropriate class will be shown here.<br>Current Class:
+        <input id='cls-s' type='radio' name='cls' value='s' checked disabled><label for='cls-s'>Street</label>
+        <input id='cls-st' type='radio' name='cls' value='st' disabled><label for='cls-st'>Street Touring</label>
+        <input id='cls-sp' type='radio' name='cls' value='sp' disabled><label for='cls-sp'>Street Prepared</label>
+        <input id='cls-sm' type='radio' name='cls' value='sm' disabled><label for='cls-sm'>Street Modified</label>
+        <input id='cls-p' type='radio' name='cls' value='p' disabled><label for='cls-p'>Prepared</label>
+        <input id='cls-xp' type='radio' name='cls' value='xp' disabled><label for='cls-xp'>X Prepared</label>
+        <input id='cls-m' type='radio' name='cls' value='m' disabled><label for='cls-m'>Modified</label>
+    </div>
+    <h1 style='padding-top:2em;'>Utah SCCA Solo Class Picker</h1>
+    <div class='disclaimer'>Note: This is under development!<br>Note: This is to be used as a general guide to common mods!
+    If you need more information about particular allowances or specific classes for your car, check out the <a href='https://www.scca.com/downloads/39464-2018-solo-rules-book-1-draft-a/download'>Official SCCA Rulebook</a>.</div>
+    <h2>Modifications</h2>
+    <p><i>Select each part if it is not stock, has been modified, or was not available for your car from the factory.</i><br><button id="clear_mods_button">Clear selections</button>
+        {% for category in modlist.keys()|sort %}
+        <h3>{{category}}</h3>
+            {% for mod in modlist[category] %}<input class='mod' id='{{mod.name}}' type='checkbox'><label for='{{mod.name}}'>{{mod.description}}</label><br>
+            {% endfor %}
+        {% endfor %}
+    </p>
+    <p><a href='https://github.com/danialre/scca-classpicker'>ClassPicker by Danial Ebling</a> - based off of the rules posted for January 1, 2018</p>
+</body></html>

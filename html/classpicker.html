@@ -5,64 +5,72 @@
         body { font-family:sans-serif; }
         input[type='radio'] { display:none; }
         label { padding:0.2em; }
-        #curclass { position:fixed; padding:0.5em; top:0; padding-bottom:1em; background-color:#fff; }
+        #curclass { position:fixed; padding:0.5em; width:100%; left:0; top:0; padding-bottom:1em; background-color:#fff; box-shadow: 0px 2px 10px #777;}
         #curclass input+label { color: #888; }
         #curclass input:checked+label { color: #000; background-color: #8f8; }
         .disclaimer { background-color: #f88; }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-    const VCl = Object.freeze({STREET: 1, STR_TOURING: 2, STR_PREP: 3, PREP: 4, STR_MOD: 5, MOD: 6, XP: 11})
-    var cur_class = VCl.STREET;
+    const VCl = Object.freeze({ XP: 6, STR_PREP: 3, PREP: 5, MOD: 11, STR_MOD: 4, STREET: 1, STR_TOURING: 2,  })
     function is_c(elem) { return $('#' + elem).is(':checked'); } // helper function: is this value true or not
-    function set_class(new_class) { cur_class = (cur_class < new_class ? new_class : cur_class); } // helper function: apply and bump up the class if needed    
+    var allowed_classes = Object.keys(VCl);
+    function set_class(classlist) {
+        // check current classes to make sure each one is still allowed
+        var newlist = [];
+        $.each(allowed_classes, function(idx) { // note: cannot remove without copying array, since this is going by array index
+            if($.inArray(allowed_classes[idx], classlist) > -1) newlist.push(allowed_classes[idx]);
+        });
+        allowed_classes = (newlist.length == 0 ? classlist : newlist);
+    }
     function check_class() {
-        cur_class = VCl.STREET;
-
-        // class picker logic
-        if(is_c('cai')) set_class(VCl.STR_TOURING);
-        if(is_c('intercooler')) set_class(VCl.STR_PREP);
-        if(is_c('tb')) set_class(VCl.STR_PREP);
-        if(is_c('fi')) set_class(VCl.STR_MOD);
+        allowed_classes = Object.keys(VCl);
+        if(is_c("steeringwheel")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("brakes")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("wheelsize")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("catback")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STREET", "STR_TOURING"]);
+if(is_c("catless")) set_class(["XP", "STR_MOD", "MOD", "STR_PREP", "PREP"]);
+if(is_c("dp")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("up")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("cai")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("intercooler")) set_class(["XP", "STR_MOD", "MOD", "STR_PREP", "PREP"]);
+if(is_c("tb")) set_class(["XP", "STR_MOD", "MOD", "STR_PREP", "PREP"]);
+if(is_c("fi")) set_class(["MOD", "STR_MOD", "XP"]);
+if(is_c("tune")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("ebcs")) set_class(["XP", "STR_MOD", "MOD", "STR_PREP", "PREP"]);
+if(is_c("egr")) set_class(["XP", "STR_MOD", "MOD", "STR_PREP", "PREP"]);
+if(is_c("batt")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("oilpan")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("pistons")) set_class(["XP", "STR_MOD", "MOD", "PREP"]);
+if(is_c("cams")) set_class(["XP", "STR_MOD", "MOD", "PREP"]);
+if(is_c("crank")) set_class(["XP", "STR_MOD", "MOD", "PREP"]);
+if(is_c("crankstroke")) set_class(["MOD", "STR_MOD", "XP"]);
+if(is_c("engineswap")) set_class(["MOD", "STR_MOD", "XP"]);
+if(is_c("xpengineswap")) set_class(["XP"]);
+if(is_c("transwap")) set_class(["XP", "STR_MOD", "MOD", "PREP"]);
+if(is_c("swaybar")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STREET", "STR_TOURING"]);
+if(is_c("swaybar2")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("spring")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("shock")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STREET", "STR_TOURING"]);
+if(is_c("camplate")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("coilover")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("fenderroll")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("fenderpull")) set_class(["XP", "STR_MOD", "MOD", "STR_PREP", "PREP"]);
+if(is_c("interior")) set_class(["MOD", "XP", "PREP"]);
+if(is_c("body1")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("body2")) set_class(["XP", "STR_MOD", "MOD", "STR_PREP", "PREP"]);
+if(is_c("strutbar")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("sfc")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+if(is_c("chassismod")) set_class(["MOD"]);
         
-        if(is_c('batt')) set_class(VCl.STR_TOURING);
-        if(is_c('tune')) set_class(VCl.STR_TOURING);
-        if(is_c('oilpan')) set_class(VCl.STR_TOURING);
-        if(is_c('ebcs')) set_class(VCl.STR_MOD);
-        if(is_c('egr')) set_class(VCl.STR_PREP);
-        if(is_c('pistons')) set_class(VCl.STR_MOD);
-        if(is_c('cams')) set_class(VCl.STR_MOD);
-        if(is_c('crank')) set_class(VCl.STR_MOD);
-        if(is_c('mswap')) set_class(VCl.STR_MOD);
-        if(is_c('mswapxp')) set_class(VCl.XP);
-        if(is_c('transwap')) set_class(VCl.STR_MOD);
-        
-        if(is_c('catless')) set_class(VCl.STR_PREP);
-        if(is_c('dp')) set_class(VCl.STR_TOURING);
-        if(is_c('up')) set_class(VCl.STR_TOURING);
-        
-        if(is_c('wsize')) set_class(VCl.STR_TOURING);
-        if(is_c('brakes')) set_class(VCl.STR_TOURING);
-        if(is_c('steering')) set_class(VCl.STR_TOURING);
-        if(is_c('spring')) set_class(VCl.STR_TOURING);
-        if(is_c('swaybar2')) set_class(VCl.STR_TOURING);
-        if(is_c('camplate')) set_class(VCl.STR_TOURING);
-        if(is_c('coilover')) set_class(VCl.STR_TOURING);
-        
-        if(is_c('froll')) set_class(VCl.STR_TOURING);
-        if(is_c('fpull')) set_class(VCl.STR_PREP);
-        if(is_c('interior')) set_class(VCl.PREP);
-        if(is_c('body1')) set_class(VCl.STR_TOURING);
-        if(is_c('body2')) set_class(VCl.STR_PREP);
-        if(is_c('strutbar')) set_class(VCl.STR_TOURING);
-        if(is_c('sfc')) set_class(VCl.STR_TOURING);
-        if(is_c('chassismod')) set_class(VCl.MOD);
-        
-        // edge cases
-        // case 1: interior removed (not allowed in SM) AND engine swap/turbos (not allowed in Prepared): go to XP
-        if(is_c('interior') && (is_c('mswap') || is_c('fi'))) set_class(VCl.XP);
-        
-        switch(cur_class) { // update the UI
+        if(allowed_classes.length < 1) {
+            alert('Error determining classes'); // something went wrong
+            return;
+        }
+        var best_class = VCl[allowed_classes[0]]
+        // look for "easiest" class and pick that
+        $.each(allowed_classes, function(idx) { if(VCl[allowed_classes[idx]] < best_class) best_class = VCl[allowed_classes[idx]]; });
+        switch(best_class) { // update the UI
             case VCl.STR_TOURING: $('#cls-st').prop('checked', true); break;
             case VCl.STR_PREP:    $('#cls-sp').prop('checked', true); break;
             case VCl.STR_MOD:     $('#cls-sm').prop('checked', true); break;
@@ -72,10 +80,14 @@
             default:              $('#cls-s').prop('checked', true);
         }
     }
-
+    function clear_mods() {
+        $('input.mod').prop('checked', false);
+        check_class(); // reset UI
+    }
     window.onload = function() {
         $('input.mod').click(check_class);
-        check_class();
+        $('#clear_mods_button').click(clear_mods);
+        check_class(); // check anyway if the page reloads
     }
     </script>
 </head><body>
@@ -92,54 +104,63 @@
     <div class='disclaimer'>Note: This is under development!<br>Note: This is to be used as a general guide to common mods!
     If you need more information about particular allowances or specific classes for your car, check out the <a href='https://www.scca.com/downloads/39464-2018-solo-rules-book-1-draft-a/download'>Official SCCA Rulebook</a>.</div>
     <h2>Modifications</h2>
-    <p><i>Select each part if it is not stock, has been modified, or was not available for your car from the factory.</i>
-        <h3>Intake</h3>
-        <input class='mod' id='cai' type='checkbox'><label for='cai'>Cold-air intake or Short-ram intake</label><br>
-        <input class='mod' id='intercooler' type='checkbox'><label for='intercooler'>Intercooler (added or replaced)</label><br>
-        <input class='mod' id='tb' type='checkbox'><label for='tb'>Throttle Body or Intake manifold</label><br>
-        <input class='mod' id='fi' type='checkbox'><label for='fi'>Turbocharger/Supercharger (added, modified or replaced)</label><br>
-        
-        <h3>Engine</h3>
-        <input class='mod' id='tune' type='checkbox'><label for='tune'>ECU tune or reprogram</label><br>
-        <input class='mod' id='ebcs' type='checkbox'><label for='ebcs'>Boost control solenoid (includes controllers, does not include ECU remaps)</label><br>
-        <input class='mod' id='egr' type='checkbox'><label for='egr'>Emissions devices (EGR, air pump, etc.) removed</label><br>
-        <input class='mod' id='batt' type='checkbox'><label for='batt'>Battery relocation</label><br>
-        <input class='mod' id='oilpan' type='checkbox'><label for='oilpan'>Oil pan or pickups</label><br>
-        <input class='mod' id='pistons' type='checkbox'><label for='pistons'>Pistons</label><br>
-        <input class='mod' id='cams' type='checkbox'><label for='cams'>Camshaft(s)</label><br>
-        <input class='mod' id='crank' type='checkbox'><label for='crank'>Crankshaft</label><br>
-        <input class='mod' id='mswap' type='checkbox'><label for='mswap'>Motor swap within the same manufacturer (Rotary Miatas, etc.)</label><br>
-        <input class='mod' id='mswapxp' type='checkbox'><label for='mswapxp'>Motor swap with different manufacturers (V8/LS-powered Miatas, etc.)</label><br>
-        <input class='mod' id='transwap' type='checkbox'><label for='transwap'>Transmission swap</label><br>
-        
-        <h3>Exhaust</h3>
-        <input class='mod' id='catback' type='checkbox'><label for='catback'>Catback exhaust</label><br>
-        <input class='mod' id='catless' type='checkbox'><label for='catless'>Last catalytic converter removed (includes catless downpipes)</label><br>
-        <input class='mod' id='dp' type='checkbox'><label for='dp'>Downpipe</label><br>
-        <input class='mod' id='up' type='checkbox'><label for='up'>Headers (includes up-pipe)</label><br>
-
-        <h3>Wheels</h3>
-        <input class='mod' id='brakes' type='checkbox'><label for='brakes'>Brake calipers or rotors, or disc/drum swap</label><br>
-        <input class='mod' id='wsize' type='checkbox'><label for='wsize'>Wheel width increased beyond stock or diameter changed more than +/-1 inch</label><br>
-        <input class='mod' id='steering' type='checkbox'><label for='steering'>Steering wheel that replaces one with airbags</label><br>
-
-        <h3>Suspension</h3>
-        <input class='mod' id='swaybar' type='checkbox'><label for='swaybar'>Sway bar (up to 1 added or removed)</label><br>
-        <input class='mod' id='swaybar2' type='checkbox'><label for='swaybar2'>Both sway bars changed</label><br>
-        <input class='mod' id='spring' type='checkbox'><label for='spring'>Springs (includes cutting)</label><br>
-        <input class='mod' id='shock' type='checkbox'><label for='shock'>Shock absorbers/Struts (without spring changes)</label><br>
-        <input class='mod' id='camplate' type='checkbox'><label for='camplate'>Camber plate(s)</label><br>
-        <input class='mod' id='coilover' type='checkbox'><label for='coilover'>Coilovers</label><br>
+    <p><i>Select each part if it is not stock, has been modified, or was not available for your car from the factory.</i><br><button id="clear_mods_button">Clear selections</button>
         
         <h3>Bodywork</h3>
-        <input class='mod' id='froll' type='checkbox'><label for='froll'>Fenders rolled</label><br>
-        <input class='mod' id='fpull' type='checkbox'><label for='fpull'>Fenders pulled</label><br>
-        <input class='mod' id='interior' type='checkbox'><label for='interior'>Stripped interior</label><br>
-        <input class='mod' id='body1' type='checkbox'><label for='body1'>OEM spoilers, splitters, wings, side skirts, vents</label><br>
-        <input class='mod' id='body2' type='checkbox'><label for='body2'>Aftermarket spoilers, splitters, wings, side skirts, vents (includes Ford Racing, TRD, NISMO, Mazdaspeed, etc.)</label><br>
-        <input class='mod' id='strutbar' type='checkbox'><label for='strutbar'>Strut bars or Strut tower braces</label><br>
-        <input class='mod' id='sfc' type='checkbox'><label for='sfc'>Subframe connectors (bolted, not welded)</label><br>
-        <input class='mod' id='chassismod' type='checkbox'><label for='chassismod'>Significant chassis modifications (roof removed on hardtop cars, body replacement on BOF cars, etc.)</label><br>
+            <input class='mod' id='fenderroll' type='checkbox'><label for='fenderroll'>Fenders rolled</label><br>
+            <input class='mod' id='fenderpull' type='checkbox'><label for='fenderpull'>Fenders pulled</label><br>
+            <input class='mod' id='interior' type='checkbox'><label for='interior'>Stripped interior</label><br>
+            <input class='mod' id='body1' type='checkbox'><label for='body1'>OEM spoilers, splitters, wings, side skirts, vents</label><br>
+            <input class='mod' id='body2' type='checkbox'><label for='body2'>Aftermarket spoilers, splitters, wings, side skirts, vents (includes Ford Racing, TRD, NISMO, Mazdaspeed, etc.)</label><br>
+            <input class='mod' id='strutbar' type='checkbox'><label for='strutbar'>Strut bars or Strut tower braces</label><br>
+            <input class='mod' id='sfc' type='checkbox'><label for='sfc'>Subframe connectors (bolted, not welded)</label><br>
+            <input class='mod' id='chassismod' type='checkbox'><label for='chassismod'>Significant chassis modifications (roof removed on hardtop cars, body replacement on BOF cars, etc.)</label><br>
+            
+        
+        <h3>Engine</h3>
+            <input class='mod' id='tune' type='checkbox'><label for='tune'>ECU tune or reprogram</label><br>
+            <input class='mod' id='ebcs' type='checkbox'><label for='ebcs'>Boost control solenoid (includes controllers, does not include ECU remaps)</label><br>
+            <input class='mod' id='egr' type='checkbox'><label for='egr'>Emissions devices (EGR, air pump, etc.) removed</label><br>
+            <input class='mod' id='batt' type='checkbox'><label for='batt'>Battery relocation</label><br>
+            <input class='mod' id='oilpan' type='checkbox'><label for='oilpan'>Oil pan or pickups</label><br>
+            <input class='mod' id='pistons' type='checkbox'><label for='pistons'>Pistons</label><br>
+            <input class='mod' id='cams' type='checkbox'><label for='cams'>Camshaft(s)</label><br>
+            <input class='mod' id='crank' type='checkbox'><label for='crank'>Crankshaft (no added stroke)</label><br>
+            <input class='mod' id='crankstroke' type='checkbox'><label for='crankstroke'>Crankshaft with changed stroke</label><br>
+            <input class='mod' id='engineswap' type='checkbox'><label for='engineswap'>Engine swap (same manufacturer)</label><br>
+            <input class='mod' id='xpengineswap' type='checkbox'><label for='xpengineswap'>Motor swap with different manufacturers (V8/LS-powered Miatas, etc.)</label><br>
+            <input class='mod' id='transwap' type='checkbox'><label for='transwap'>Transmission swap</label><br>
+            
+        
+        <h3>Exhaust</h3>
+            <input class='mod' id='catback' type='checkbox'><label for='catback'>Catback exhaust</label><br>
+            <input class='mod' id='catless' type='checkbox'><label for='catless'>Last catalytic converter removed (includes catless downpipes)</label><br>
+            <input class='mod' id='dp' type='checkbox'><label for='dp'>Downpipe (Turboback exhaust, at least one catalytic converter in system)</label><br>
+            <input class='mod' id='up' type='checkbox'><label for='up'>Headers (includes uppipe)</label><br>
+            
+        
+        <h3>Intake</h3>
+            <input class='mod' id='cai' type='checkbox'><label for='cai'>Cold-air intake or Short-ram intake</label><br>
+            <input class='mod' id='intercooler' type='checkbox'><label for='intercooler'>Intercooler (added or replaced)</label><br>
+            <input class='mod' id='tb' type='checkbox'><label for='tb'>Throttle Body or Intake manifold</label><br>
+            <input class='mod' id='fi' type='checkbox'><label for='fi'>Turbocharger/Supercharger (added, modified or replaced)</label><br>
+            
+        
+        <h3>Suspension</h3>
+            <input class='mod' id='swaybar' type='checkbox'><label for='swaybar'>Sway bar (up to 1 added or removed)</label><br>
+            <input class='mod' id='swaybar2' type='checkbox'><label for='swaybar2'>Both sway bars changed</label><br>
+            <input class='mod' id='spring' type='checkbox'><label for='spring'>Springs (includes cutting)</label><br>
+            <input class='mod' id='shock' type='checkbox'><label for='shock'>Shock absorbers/Struts (without spring changes)</label><br>
+            <input class='mod' id='camplate' type='checkbox'><label for='camplate'>Camber plate(s)</label><br>
+            <input class='mod' id='coilover' type='checkbox'><label for='coilover'>Coilovers</label><br>
+            
+        
+        <h3>Wheels And Tires</h3>
+            <input class='mod' id='steeringwheel' type='checkbox'><label for='steeringwheel'>Aftermarket steering wheel that replaces one with airbags</label><br>
+            <input class='mod' id='brakes' type='checkbox'><label for='brakes'>Brake calipers or rotors, or disc/drum swap</label><br>
+            <input class='mod' id='wheelsize' type='checkbox'><label for='wheelsize'>Wheel width increased beyond stock or diameter changed more than +/-1 inch</label><br>
+            
+        
     </p>
-    <p>by Danial Ebling - based off of the rules posted for January 1, 2018</p>
+    <p><a href='https://github.com/danialre/scca-classpicker'>ClassPicker by Danial Ebling</a> - based off of the rules posted for January 1, 2018</p>
 </body></html>
