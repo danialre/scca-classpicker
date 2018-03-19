@@ -25,7 +25,7 @@ class Mod(object):
 
         for k, v in mod_dict.items():
             if k == 'allowed_class':
-                if any([c not in Classes.get() for c in v]):
+                if any([c not in Classes.getlist() for c in v]):
                     raise ValueError("Invalid class for " +mod_dict.get('name'))
 
             setattr(self, k, v)
