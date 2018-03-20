@@ -5,16 +5,153 @@
         body { font-family:sans-serif; }
         input[type='radio'] { display:none; }
         label { padding:0.2em; }
-        #curclass { position:fixed; padding:0.5em; width:100%; left:0; top:0; padding-bottom:1em; background-color:#fff; box-shadow: 0px 2px 10px #777;}
+        #curclass { position:fixed; padding:0.5em; width:100%; left:0; top:0; padding-bottom:0.8em; background-color:#fff; box-shadow: 0px 2px 10px #777;}
         #curclass input+label { color: #888; }
         #curclass input:checked+label { color: #000; background-color: #8f8; }
         .disclaimer { background-color: #f88; }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-    const VCl = Object.freeze({ XP: 6, STR_PREP: 3, PREP: 5, MOD: 11, STR_MOD: 4, STREET: 1, STR_TOURING: 2,  })
+    const VCl = Object.freeze({ STR_TOURING: 2, XP: 6, STREET: 1, STR_MOD: 4, PREP: 5, MOD: 11, STR_PREP: 3,  })
     function is_c(elem) { return $('#' + elem).is(':checked'); } // helper function: is this value true or not
     var allowed_classes = Object.keys(VCl);
+    var best_modclass = VCl.STREET;
+    vehiclelist = [{make: "Ford", model: "Focus", trim: "Non-turbo", yearmin: "None", yearmax: "None", class_street: "HS", class_str_touring: "STS", class_str_prep: "FSP", class_str_mod: "SM", class_prep: "EP", class_mod: "EM"},{make: "Ford", model: "Focus", trim: "ST", yearmin: "2013", yearmax: "2018", class_street: "GS", class_str_touring: "STH", class_str_prep: "DSP", class_str_mod: "SMF", class_prep: "None", class_mod: "EM"},{make: "Ford", model: "Focus", trim: "RS", yearmin: "2016", yearmax: "2018", class_street: "BS", class_str_touring: "STU", class_str_prep: "ASP", class_str_mod: "SM", class_prep: "None", class_mod: "EM"},{make: "Honda", model: "Civic", trim: "NOC", yearmin: "None", yearmax: "None", class_street: "HS", class_str_touring: "STS", class_str_prep: "FSP", class_str_mod: "SMF", class_prep: "EP", class_mod: "EM"},{make: "Honda", model: "Civic", trim: "Type R", yearmin: "2017", yearmax: "2018", class_street: "DS", class_str_touring: "None", class_str_prep: "None", class_str_mod: "SMF", class_prep: "None", class_mod: "EM"},{make: "Honda", model: "Civic", trim: "Si", yearmin: "2002", yearmax: "2015", class_street: "HS", class_str_touring: "STX", class_str_prep: "DSP", class_str_mod: "SMF", class_prep: "EP", class_mod: "EM"},{make: "Honda", model: "Civic", trim: "Si", yearmin: "2016", yearmax: "2018", class_street: "DS", class_str_touring: "None", class_str_prep: "DSP", class_str_mod: "SMF", class_prep: "EP", class_mod: "EM"}];
+    // this implies that jquery has already been imported
+// list of Vehicle objects: vehiclelist
+/* vehicles format: {
+    make: {
+        model: {
+            trim: {
+                'yearmin-yearmax': {
+                    street: 'street class'
+                    etc.
+} } } } }
+*/
+var vehicles = {};
+function clear_class() {
+    $('#carclass').text(null);
+    $.each(["make", "model", "years", "trim"], function(idx, selector) {
+        $("#cls-" + selector).find('option').remove()
+        $("#cls-" + selector).append($("<option/>", {value: null, text: "Select", disabled: true, selected: true}));
+    });
+    // update Make selector
+    $.each(Object.keys(vehicles), function(idx, val) {
+        $("#cls-make").append($("<option/>", {value: val, text: val}));
+    });
+}
+function get_makes_and_models() {
+    // (re)generate a list of makes
+    vehicles = {};
+    $.each(vehiclelist, function(idx) {
+        var v = vehiclelist[idx];
+        var yearstring = String(v.yearmin) + '-' + String(v.yearmax);
+        if(yearstring == "None-None") yearstring = "Any"
+        if(!(v.make in vehicles)) {
+            vehicles[v.make] = {}
+        }
+        if(!(v.model in vehicles[v.make])) {
+            vehicles[v.make][v.model] = {}
+        }
+        if(!(v.trim in vehicles[v.make][v.model])) {
+            vehicles[v.make][v.model][v.trim] = {}
+        }
+        if(!(yearstring in vehicles[v.make][v.model][v.trim])) {
+            vehicles[v.make][v.model][v.trim][yearstring] = {}
+        }
+        vehicles[vehiclelist[idx].make][vehiclelist[idx].model][vehiclelist[idx].trim][yearstring] = {
+            STREET: vehiclelist[idx].class_street, STR_TOURING: vehiclelist[idx].class_str_touring, STR_PREP: vehiclelist[idx].class_str_prep, STR_MOD: vehiclelist[idx].class_str_mod, PREP: vehiclelist[idx].class_prep, MOD: vehiclelist[idx].class_mod
+        }
+    });
+    if(!$("#cls-make").val()) clear_class();
+}
+
+function search_vehicle(make=null, model=null, trim=null, yearrange=null) {
+    if(!make) {
+        return Object.keys(vehicles); // return a list of makes
+    }
+    if(!model && !vehicles[make][null]) {
+        return Object.keys(vehicles[make]); // return a list of models   
+    }
+    if(!trim && !vehicles[make][model][null]) {
+        return Object.keys(vehicles[make][model]); // return a list of trims
+    }
+    if(!yearrange && !vehicles[make][model][trim][null]) {
+        return Object.keys(vehicles[make][model][trim]); // return a list of year ranges
+    }
+    return vehicles[make][model][trim][yearrange];
+}
+
+function get_model() {
+    console.log('model');
+    result = search_vehicle(make=$("#cls-make").val());
+    $("#cls-model").find('option').remove();
+    $("#cls-model").append($("<option/>", {value: null, text: "Select", disabled: true}));
+    $.each(result, function(idx, val) {
+        $("#cls-model").append($("<option/>", {value: val, text: val}));
+    });
+    if(result.length <= 1) {
+        $("#cls-model option:last-child").attr('selected', true);
+        get_trim();
+    } else {
+        $("#cls-model option:first-child").attr('selected', true);
+    }
+}
+function get_trim() {
+    console.log('trim');
+    result = search_vehicle(make=$("#cls-make").val(), model=$("#cls-model").val());
+    $("#cls-trim").find('option').remove();
+    $("#cls-trim").append($("<option/>", {value: null, text: "Select", disabled: true}));
+    $.each(result, function(idx, val) {
+        $("#cls-trim").append($("<option/>", {value: val, text: val}));
+    });
+    if(result.length <= 1) {
+        $("#cls-trim option:last-child").attr('selected', true);
+        get_years();
+    } else {
+        $("#cls-trim option:first-child").attr('selected', true);
+    }
+}
+function get_years() {
+    console.log('years');
+    result = search_vehicle(make=$("#cls-make").val(), model=$("#cls-model").val(), trim=$("#cls-trim").val());
+    console.log(result);
+    $("#cls-years").find('option').remove();
+    $("#cls-years").append($("<option/>", {value: null, text: "Select", disabled: true}));
+    $.each(result, function(idx, val) {
+        $("#cls-years").append($("<option/>", {value: val, text: val}));
+    });
+    if(result.length <= 1) {
+        $("#cls-years option:last-child").attr('selected', true);
+        get_vehicleclass();
+    } else {
+        $("#cls-years option:first-child").attr('selected', true);
+    }
+}
+function get_vehicleclass() {
+    var make = $("#cls-make").val();
+    var model = $("#cls-model").val();
+    var trim = $("#cls-trim").val();
+    var years = $("#cls-years").val();
+    if(!make || !model || !years || !trim) return; // quit right away
+    result = search_vehicle(make, model, trim, years);
+    if(result.constructor === Array) return;
+
+    // lookup based on mods and update #carclass
+    switch(best_modclass) { // update the UI
+        case VCl.STR_TOURING: result = result.STR_TOURING; break;
+        case VCl.STR_PREP:    result = result.STR_PREP; break;
+        case VCl.STR_MOD:     result = result.STR_MOD; break;
+        case VCl.PREP:        result = result.PREP; break;
+        case VCl.MOD:         result = result.MOD; break;
+        case VCl.XP:          result = "XP"; break;
+        default:              result = result.STREET;
+    }
+    if(result == 'None') result = 'Class not found - check the rulebook';
+    $('#carclass').text(result);
+}
+
+    
     function set_class(classlist) {
         // check current classes to make sure each one is still allowed
         var newlist = [];
@@ -25,52 +162,52 @@
     }
     function check_class() {
         allowed_classes = Object.keys(VCl);
-        if(is_c("steeringwheel")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("brakes")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("wheelsize")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("catback")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STREET", "STR_TOURING"]);
-if(is_c("catless")) set_class(["XP", "STR_MOD", "MOD", "STR_PREP", "PREP"]);
-if(is_c("dp")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("up")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("cai")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("intercooler")) set_class(["XP", "STR_MOD", "MOD", "STR_PREP", "PREP"]);
-if(is_c("tb")) set_class(["XP", "STR_MOD", "MOD", "STR_PREP", "PREP"]);
-if(is_c("fi")) set_class(["MOD", "STR_MOD", "XP"]);
-if(is_c("tune")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("ebcs")) set_class(["XP", "STR_MOD", "MOD", "STR_PREP", "PREP"]);
-if(is_c("egr")) set_class(["XP", "STR_MOD", "MOD", "STR_PREP", "PREP"]);
-if(is_c("batt")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("oilpan")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("pistons")) set_class(["XP", "STR_MOD", "MOD", "PREP"]);
-if(is_c("cams")) set_class(["XP", "STR_MOD", "MOD", "PREP"]);
-if(is_c("crank")) set_class(["XP", "STR_MOD", "MOD", "PREP"]);
-if(is_c("crankstroke")) set_class(["MOD", "STR_MOD", "XP"]);
-if(is_c("engineswap")) set_class(["MOD", "STR_MOD", "XP"]);
-if(is_c("xpengineswap")) set_class(["XP"]);
-if(is_c("transwap")) set_class(["XP", "STR_MOD", "MOD", "PREP"]);
-if(is_c("swaybar")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STREET", "STR_TOURING"]);
-if(is_c("swaybar2")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("spring")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("shock")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STREET", "STR_TOURING"]);
-if(is_c("camplate")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("coilover")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("fenderroll")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("fenderpull")) set_class(["XP", "STR_MOD", "MOD", "STR_PREP", "PREP"]);
-if(is_c("interior")) set_class(["MOD", "XP", "PREP"]);
-if(is_c("body1")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("body2")) set_class(["XP", "STR_MOD", "MOD", "STR_PREP", "PREP"]);
-if(is_c("strutbar")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
-if(is_c("sfc")) set_class(["XP", "STR_PREP", "PREP", "MOD", "STR_MOD", "STR_TOURING"]);
+        if(is_c("catback")) set_class(["STR_TOURING", "STR_MOD", "STREET", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("catless")) set_class(["XP", "STR_MOD", "PREP", "MOD", "STR_PREP"]);
+if(is_c("dp")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("up")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("steeringwheel")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("brakes")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("wheelsize")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("fenderroll")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("fenderpull")) set_class(["XP", "STR_MOD", "PREP", "MOD", "STR_PREP"]);
+if(is_c("interior")) set_class(["XP", "PREP", "MOD"]);
+if(is_c("body1")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("body2")) set_class(["XP", "STR_MOD", "PREP", "MOD", "STR_PREP"]);
+if(is_c("strutbar")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("sfc")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
 if(is_c("chassismod")) set_class(["MOD"]);
+if(is_c("swaybar")) set_class(["STR_TOURING", "STR_MOD", "STREET", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("swaybar2")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("spring")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("shock")) set_class(["STR_TOURING", "STR_MOD", "STREET", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("camplate")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("coilover")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("tune")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("ebcs")) set_class(["XP", "STR_MOD", "PREP", "MOD", "STR_PREP"]);
+if(is_c("egr")) set_class(["XP", "STR_MOD", "PREP", "MOD", "STR_PREP"]);
+if(is_c("batt")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("oilpan")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("pistons")) set_class(["XP", "STR_MOD", "PREP", "MOD"]);
+if(is_c("cams")) set_class(["XP", "STR_MOD", "PREP", "MOD"]);
+if(is_c("crank")) set_class(["XP", "STR_MOD", "PREP", "MOD"]);
+if(is_c("crankstroke")) set_class(["STR_MOD", "XP", "MOD"]);
+if(is_c("engineswap")) set_class(["STR_MOD", "XP", "MOD"]);
+if(is_c("xpengineswap")) set_class(["XP"]);
+if(is_c("transwap")) set_class(["XP", "STR_MOD", "PREP", "MOD"]);
+if(is_c("cai")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
+if(is_c("intercooler")) set_class(["XP", "STR_MOD", "PREP", "MOD", "STR_PREP"]);
+if(is_c("tb")) set_class(["XP", "STR_MOD", "PREP", "MOD", "STR_PREP"]);
+if(is_c("fi")) set_class(["STR_MOD", "XP", "MOD"]);
         
         if(allowed_classes.length < 1) {
             alert('Error determining classes'); // something went wrong
             return;
         }
-        var best_class = VCl[allowed_classes[0]]
+        best_modclass = VCl[allowed_classes[0]]
         // look for "easiest" class and pick that
-        $.each(allowed_classes, function(idx) { if(VCl[allowed_classes[idx]] < best_class) best_class = VCl[allowed_classes[idx]]; });
-        switch(best_class) { // update the UI
+        $.each(allowed_classes, function(idx) { if(VCl[allowed_classes[idx]] < best_modclass) best_modclass = VCl[allowed_classes[idx]]; });
+        switch(best_modclass) { // update the UI
             case VCl.STR_TOURING: $('#cls-st').prop('checked', true); break;
             case VCl.STR_PREP:    $('#cls-sp').prop('checked', true); break;
             case VCl.STR_MOD:     $('#cls-sm').prop('checked', true); break;
@@ -79,6 +216,9 @@ if(is_c("chassismod")) set_class(["MOD"]);
             case VCl.XP:          $('#cls-xp').prop('checked', true); break;
             default:              $('#cls-s').prop('checked', true);
         }
+        
+        // now that modclass is picked, get vehicle class (from vehiclepicker.js)
+        get_vehicleclass();
     }
     function clear_mods() {
         $('input.mod').prop('checked', false);
@@ -87,22 +227,37 @@ if(is_c("chassismod")) set_class(["MOD"]);
     window.onload = function() {
         $('input.mod').click(check_class);
         $('#clear_mods_button').click(clear_mods);
+        $('#cls-make').change(get_model);
+        $('#cls-model').change(get_trim);
+        $('#cls-trim').change(get_years);
+        $('#cls-years').change(get_vehicleclass);
+        $('#clear_class_button').click(clear_class);
+        get_makes_and_models();
+        
         check_class(); // check anyway if the page reloads
     }
     </script>
 </head><body>
-    <div id='curclass'>Based on the modifications your car has, your appropriate class will be shown here.<br>Current Class:
-        <input id='cls-s' type='radio' name='cls' value='s' checked disabled><label for='cls-s'>Street</label>
-        <input id='cls-st' type='radio' name='cls' value='st' disabled><label for='cls-st'>Street Touring</label>
-        <input id='cls-sp' type='radio' name='cls' value='sp' disabled><label for='cls-sp'>Street Prepared</label>
-        <input id='cls-sm' type='radio' name='cls' value='sm' disabled><label for='cls-sm'>Street Modified</label>
-        <input id='cls-p' type='radio' name='cls' value='p' disabled><label for='cls-p'>Prepared</label>
-        <input id='cls-xp' type='radio' name='cls' value='xp' disabled><label for='cls-xp'>X Prepared</label>
-        <input id='cls-m' type='radio' name='cls' value='m' disabled><label for='cls-m'>Modified</label>
+    <div id='curclass'>Based on the modifications your car has, your appropriate class will be shown here.<br>Category from Modifications:
+        <input id='cls-s' type='radio' name='mcls' value='s' checked disabled><label for='cls-s'>Street</label>
+        <input id='cls-st' type='radio' name='mcls' value='st' disabled><label for='cls-st'>Street Touring</label>
+        <input id='cls-sp' type='radio' name='mcls' value='sp' disabled><label for='cls-sp'>Street Prepared</label>
+        <input id='cls-sm' type='radio' name='mcls' value='sm' disabled><label for='cls-sm'>Street Modified</label>
+        <input id='cls-p' type='radio' name='mcls' value='p' disabled><label for='cls-p'>Prepared</label>
+        <input id='cls-xp' type='radio' name='mcls' value='xp' disabled><label for='cls-xp'>X Prepared</label>
+        <input id='cls-m' type='radio' name='mcls' value='m' disabled><label for='cls-m'>Modified</label>
+        <br>Class: <span id="carclass" style='font-size:1.4em;background-color:#8f8'></span>
     </div>
-    <h1 style='padding-top:2em;'>Utah SCCA Solo Class Picker</h1>
+    <h1 style='padding-top:2.2em;'>Utah SCCA Solo Class Picker</h1>
     <div class='disclaimer'>Note: This is under development!<br>Note: This is to be used as a general guide to common mods!
     If you need more information about particular allowances or specific classes for your car, check out the <a href='https://www.scca.com/downloads/39464-2018-solo-rules-book-1-draft-a/download'>Official SCCA Rulebook</a>.</div>
+    <h2>Vehicle</h2>
+    <p><label for='cls-make'>Make</label><select id='cls-make'><option disabled selected>Select</option></select>
+        <label for='cls-model'>Model</label><select id='cls-model'><option disabled selected>Select</option></select>
+        <label for='cls-trim'>Trim/Engine</label><select id='cls-trim'><option disabled selected>Select</option></select>
+        <label for='cls-years'>Year</label><select id='cls-years'><option disabled selected>Select</option></select>
+        <button id="clear_class_button">Clear selection</button><br>*NOC = Not otherwise classed
+    </p>
     <h2>Modifications</h2>
     <p><i>Select each part if it is not stock, has been modified, or was not available for your car from the factory.</i><br><button id="clear_mods_button">Clear selections</button>
         

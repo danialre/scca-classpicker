@@ -1,0 +1,87 @@
+{
+    "version": "0.1",
+    "lastupdate": "20180318",
+    "vehicles": [
+        {
+            "make": "Ford",
+            "model": "Focus",
+            "trim": "Non-turbo",
+            "class_street": "HS",
+            "class_str_touring": "STS",
+            "class_str_prep": "FSP",
+            "class_str_mod": "SM",
+            "class_prep": "EP",
+            "class_mod": "EM"
+        },
+        {
+            "yearmin": "2013",
+            "yearmax": "2018",
+            "make": "Ford",
+            "model": "Focus",
+            "trim": "ST",
+            "class_street": "GS",
+            "class_str_touring": "STH",
+            "class_str_prep": "DSP",
+            "class_str_mod": "SMF",
+            "class_mod": "EM"
+        },
+        {
+            "yearmin": "2016",
+            "yearmax": "2018",
+            "make": "Ford",
+            "model": "Focus",
+            "trim": "RS",
+            "class_street": "BS",
+            "class_str_touring": "STU",
+            "class_str_prep": "ASP",
+            "class_str_mod": "SM",
+            "class_mod": "EM"
+        },
+        {
+            "make": "Honda",
+            "model": "Civic",
+            "trim": "NOC",
+            "class_street": "HS",
+            "class_str_touring": "STS",
+            "class_str_prep": "FSP",
+            "class_str_mod": "SMF",
+            "class_prep": "EP",
+            "class_mod": "EM"
+        },
+        {
+            "yearmin": "2017",
+            "yearmax": "2018",
+            "make": "Honda",
+            "model": "Civic",
+            "trim": "Type R",
+            "class_street": "DS",
+            "class_str_mod": "SMF",
+            "class_mod": "EM"
+        },
+        {
+            "yearmin": "2002",
+            "yearmax": "2015",
+            "make": "Honda",
+            "model": "Civic",
+            "trim": "Si",
+            "class_street": "HS",
+            "class_str_touring": "STX",
+            "class_str_prep": "DSP",
+            "class_str_mod": "SMF",
+            "class_prep": "EP",
+            "class_mod": "EM"
+        },
+        {
+            "yearmin": "2016",
+            "yearmax": "2018",
+            "make": "Honda",
+            "model": "Civic",
+            "trim": "Si",
+            "class_street": "DS",
+            "class_str_prep": "DSP",
+            "class_str_mod": "SMF",
+            "class_prep": "EP",
+            "class_mod": "EM"
+        }
+    ]
+}

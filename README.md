@@ -7,9 +7,10 @@ exhaustive, it helps newcomers with correctly classing their car without too muc
 - Simplicity - Selecting the modifications made to your vehicle determines your class category (Street, Street Touring, Prepared, etc.)
 - Flexibility - Additional Modifications may be simply added by editing a JSON file
 - Portability - Once generated, the HTML page may be copied and run without an app server
+- Year, make, and model selections to determine the exact class (incomplete)
 
 ### Future Features
-- Year, make, and model selections to determine the exact class
+- Add more vehicles to the vehicle JSON file
 - Vehicle features (displacement, body style, etc.) to determine an approximate class 
 - PDF parser to update specific vehicle classing (not modifications!)
 
