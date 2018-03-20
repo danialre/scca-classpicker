@@ -12,7 +12,7 @@ exhaustive, it helps newcomers with correctly classing their car without too muc
 ### Future Features
 - Add more vehicles to the vehicle JSON file
 - Vehicle features (displacement, body style, etc.) to determine an approximate class 
-- PDF parser to update specific vehicle classing (not modifications!)
+- PDF parser to update specific vehicle classing (not modifications!) from the offical rulebooks and FasTrack updates
 
 # How to Use
 To view the class picker, go to the [generated HTML page on GitHub Pages](https://danialre.github.io/scca-classpicker/html/classpicker.html) and follow the instructions there.
