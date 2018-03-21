@@ -82,13 +82,13 @@
         },
         {
             "name": "engineswap",
-            "description": "Engine swap (same manufacturer)",
+            "description": "Engine swap (with other car/truck engines)",
             "category": "Engine",
             "allowed_class": ["STR_MOD", "MOD"]
         },
         {
             "name": "xpengineswap",
-            "description": "Motor swap with different manufacturers (V8/LS-powered Miatas, etc.)",
+            "description": "Engine swap with non-road vehicle engines",
             "category": "Engine",
             "allowed_class": ["XP"]
         },

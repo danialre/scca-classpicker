@@ -12,7 +12,7 @@
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-    const VCl = Object.freeze({ STR_TOURING: 2, XP: 6, STREET: 1, STR_MOD: 4, PREP: 5, MOD: 11, STR_PREP: 3,  })
+    const VCl = Object.freeze({ STREET: 1, STR_MOD: 4, STR_PREP: 3, PREP: 5, XP: 6, STR_TOURING: 2, MOD: 11,  })
     function is_c(elem) { return $('#' + elem).is(':checked'); } // helper function: is this value true or not
     var allowed_classes = Object.keys(VCl);
     var best_modclass = VCl.STREET;
@@ -162,43 +162,43 @@ function get_vehicleclass() {
     }
     function check_class() {
         allowed_classes = Object.keys(VCl);
-        if(is_c("catback")) set_class(["STR_TOURING", "STR_MOD", "STREET", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("catless")) set_class(["XP", "STR_MOD", "PREP", "MOD", "STR_PREP"]);
-if(is_c("dp")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("up")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("steeringwheel")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("brakes")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("wheelsize")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("fenderroll")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("fenderpull")) set_class(["XP", "STR_MOD", "PREP", "MOD", "STR_PREP"]);
-if(is_c("interior")) set_class(["XP", "PREP", "MOD"]);
-if(is_c("body1")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("body2")) set_class(["XP", "STR_MOD", "PREP", "MOD", "STR_PREP"]);
-if(is_c("strutbar")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("sfc")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("chassismod")) set_class(["MOD"]);
-if(is_c("swaybar")) set_class(["STR_TOURING", "STR_MOD", "STREET", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("swaybar2")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("spring")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("shock")) set_class(["STR_TOURING", "STR_MOD", "STREET", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("camplate")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("coilover")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("tune")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("ebcs")) set_class(["XP", "STR_MOD", "PREP", "MOD", "STR_PREP"]);
-if(is_c("egr")) set_class(["XP", "STR_MOD", "PREP", "MOD", "STR_PREP"]);
-if(is_c("batt")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("oilpan")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("pistons")) set_class(["XP", "STR_MOD", "PREP", "MOD"]);
-if(is_c("cams")) set_class(["XP", "STR_MOD", "PREP", "MOD"]);
-if(is_c("crank")) set_class(["XP", "STR_MOD", "PREP", "MOD"]);
-if(is_c("crankstroke")) set_class(["STR_MOD", "XP", "MOD"]);
-if(is_c("engineswap")) set_class(["STR_MOD", "XP", "MOD"]);
+        if(is_c("steeringwheel")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("brakes")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("wheelsize")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("catback")) set_class(["STREET", "PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("catless")) set_class(["STR_MOD", "STR_PREP", "PREP", "XP", "MOD"]);
+if(is_c("dp")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("up")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("cai")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("intercooler")) set_class(["STR_MOD", "STR_PREP", "PREP", "XP", "MOD"]);
+if(is_c("tb")) set_class(["STR_MOD", "STR_PREP", "PREP", "XP", "MOD"]);
+if(is_c("fi")) set_class(["STR_MOD", "MOD", "XP"]);
+if(is_c("swaybar")) set_class(["STREET", "PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("swaybar2")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("spring")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("shock")) set_class(["STREET", "PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("camplate")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("coilover")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("tune")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("ebcs")) set_class(["STR_MOD", "STR_PREP", "PREP", "XP", "MOD"]);
+if(is_c("egr")) set_class(["STR_MOD", "STR_PREP", "PREP", "XP", "MOD"]);
+if(is_c("batt")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("oilpan")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("pistons")) set_class(["STR_MOD", "MOD", "PREP", "XP"]);
+if(is_c("cams")) set_class(["STR_MOD", "MOD", "PREP", "XP"]);
+if(is_c("crank")) set_class(["STR_MOD", "MOD", "PREP", "XP"]);
+if(is_c("crankstroke")) set_class(["STR_MOD", "MOD", "XP"]);
+if(is_c("engineswap")) set_class(["STR_MOD", "MOD", "XP"]);
 if(is_c("xpengineswap")) set_class(["XP"]);
-if(is_c("transwap")) set_class(["XP", "STR_MOD", "PREP", "MOD"]);
-if(is_c("cai")) set_class(["STR_TOURING", "STR_MOD", "XP", "PREP", "MOD", "STR_PREP"]);
-if(is_c("intercooler")) set_class(["XP", "STR_MOD", "PREP", "MOD", "STR_PREP"]);
-if(is_c("tb")) set_class(["XP", "STR_MOD", "PREP", "MOD", "STR_PREP"]);
-if(is_c("fi")) set_class(["STR_MOD", "XP", "MOD"]);
+if(is_c("transwap")) set_class(["STR_MOD", "MOD", "PREP", "XP"]);
+if(is_c("fenderroll")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("fenderpull")) set_class(["STR_MOD", "STR_PREP", "PREP", "XP", "MOD"]);
+if(is_c("interior")) set_class(["MOD", "PREP", "XP"]);
+if(is_c("body1")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("body2")) set_class(["STR_MOD", "STR_PREP", "PREP", "XP", "MOD"]);
+if(is_c("strutbar")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("sfc")) set_class(["PREP", "STR_MOD", "STR_PREP", "XP", "STR_TOURING", "MOD"]);
+if(is_c("chassismod")) set_class(["MOD"]);
         
         if(allowed_classes.length < 1) {
             alert('Error determining classes'); // something went wrong
@@ -282,8 +282,8 @@ if(is_c("fi")) set_class(["STR_MOD", "XP", "MOD"]);
             <input class='mod' id='cams' type='checkbox'><label for='cams'>Camshaft(s)</label><br>
             <input class='mod' id='crank' type='checkbox'><label for='crank'>Crankshaft (no added stroke)</label><br>
             <input class='mod' id='crankstroke' type='checkbox'><label for='crankstroke'>Crankshaft with changed stroke</label><br>
-            <input class='mod' id='engineswap' type='checkbox'><label for='engineswap'>Engine swap (same manufacturer)</label><br>
-            <input class='mod' id='xpengineswap' type='checkbox'><label for='xpengineswap'>Motor swap with different manufacturers (V8/LS-powered Miatas, etc.)</label><br>
+            <input class='mod' id='engineswap' type='checkbox'><label for='engineswap'>Engine swap (with other car/truck engines)</label><br>
+            <input class='mod' id='xpengineswap' type='checkbox'><label for='xpengineswap'>Engine swap with non-road vehicle engines</label><br>
             <input class='mod' id='transwap' type='checkbox'><label for='transwap'>Transmission swap</label><br>
             
         
